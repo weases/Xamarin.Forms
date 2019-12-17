@@ -17,7 +17,7 @@ parameters:
   nunitTestAdapterFolder: 'packages/NUnitTestAdapter.AnyVersion/build/'
   nunitTestFolder: '$(build.sourcesdirectory)'
   includeAndroid: 'true'
-  includeincludeNonAndroid: 'true'
+  includeNonAndroid: 'true'
 
 jobs:
   - job: ${{ parameters.name }}
