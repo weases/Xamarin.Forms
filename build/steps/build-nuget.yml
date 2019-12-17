@@ -5,13 +5,23 @@ steps:
       artifactName: 'win_build'
       downloadPath: '$(Build.ArtifactsDirectory)'
 
-
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)'
     inputs:
       SourceFolder: '$(Build.ArtifactsDirectory)/win_build'
       TargetFolder: '$(System.DefaultWorkingDirectory)'
 
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download build artifact win_build_2019'
+    inputs:
+      artifactName: 'win_build_2019'
+      downloadPath: '$(Build.ArtifactsDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(System.DefaultWorkingDirectory)'
+    inputs:
+      SourceFolder: '$(Build.ArtifactsDirectory)/win_build_2019'
+      TargetFolder: '$(System.DefaultWorkingDirectory)'
 
   - task: PowerShell@1
     displayName: 'Generate docs from docs repo'

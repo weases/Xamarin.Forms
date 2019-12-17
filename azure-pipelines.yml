@@ -83,6 +83,7 @@ jobs:
     buildConfiguration: $(DefaultBuildConfiguration)
     buildPlatform: $(DefaultBuildPlatform)
     provisionatorPath : 'build/provisioning/provisioning.csx'
+    artifactsName: 'win_build_2019'
 
 - template: build/steps/build-android.yml
   parameters:
