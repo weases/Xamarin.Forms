@@ -5,7 +5,12 @@ using Android.Runtime;
 using Android.Views;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific.AppCompat;
 using AView = Android.Views.View;
-using Fragment = Android.Support.V4.App.Fragment;
+
+#if __ANDROID_29__
+using AndroidX.Fragment.App;
+#else
+using Android.Support.V4.App;
+#endif
 
 namespace Xamarin.Forms.Platform.Android.AppCompat
 {

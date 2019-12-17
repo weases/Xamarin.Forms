@@ -1,7 +1,11 @@
 ﻿using System;
 using Android.App;
 using Android.OS;
+#if __ANDROID_29__
+using AndroidX.Fragment.App;
+#else
 using Android.Support.V4.App;
+#endif
 using Android.Views;
 using Embedding.XF;
 using Xamarin.Forms.Platform.Android;

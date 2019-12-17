@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using Android.OS;
+#if __ANDROID_29__
+using AndroidX.Fragment.App;
+#else
 using Android.Support.V4.App;
+#endif
 using Java.Lang;
 using Xamarin.Forms.Internals;
 using FragmentTransit = Android.App.FragmentTransit;

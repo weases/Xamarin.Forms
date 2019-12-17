@@ -1,6 +1,10 @@
 ﻿using Android.Database;
 using Android.OS;
+#if __ANDROID_29__
+using AndroidX.Fragment.App;
+#else
 using Android.Support.V4.App;
+#endif
 using Java.Lang;
 using System.Collections.Specialized;
 using Xamarin.Forms.Platform.Android.AppCompat;

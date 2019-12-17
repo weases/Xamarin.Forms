@@ -66,7 +66,20 @@ jobs:
     displayName: Build Windows Phase
     vmImage: $(winVmImage)
     targetFolder: Xamarin.Forms.ControlGallery.Android/legacyRenderers/
-    msbuildExtraArguments: '/nowarn:VSX1000'
+    msbuildExtraArguments: '/nowarn:VSX1000 /p:AndroidTargetFrameworks=MonoAndroid90'
+    buildConfiguration: $(DefaultBuildConfiguration)
+    buildPlatform: $(DefaultBuildPlatform)
+    provisionatorPath : 'build/provisioning/provisioning.csx'
+    slnPath: '.Xamarin.Forms.Android.nuget.sln'
+    androidOnly: 'true'
+
+- template: build/steps/build-windows.yml
+  parameters:
+    name: win_2019
+    displayName: Build Windows 2019 Phase
+    vmImage: 'Hosted Windows 2019 with VS2019'
+    targetFolder: Xamarin.Forms.ControlGallery.Android/legacyRenderers/
+    msbuildExtraArguments: '/nowarn:VSX1000 /p:AndroidTargetFrameworks=MonoAndroid10.0'
     buildConfiguration: $(DefaultBuildConfiguration)
     buildPlatform: $(DefaultBuildPlatform)
     provisionatorPath : 'build/provisioning/provisioning.csx'
@@ -125,6 +138,7 @@ jobs:
   displayName: Nuget Phase
   dependsOn:
    - win
+   - win_2019
   condition: succeeded()
   pool:
     name: $(winVmImage)

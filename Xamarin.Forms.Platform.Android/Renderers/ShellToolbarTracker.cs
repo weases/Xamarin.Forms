@@ -2,23 +2,37 @@
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+#if __ANDROID_29__
+using AndroidX.Core.Widget;
+#else
 using Android.Support.V4.Widget;
-using Android.Support.V7.Graphics.Drawable;
+#endif
+#if __ANDROID_29__
+using AndroidX.AppCompat.Graphics.Drawable;
+using AndroidX.DrawerLayout.Widget;
+using Google.Android.Material.AppBar;
+using AndroidX.AppCompat.Widget;
+using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
+using ADrawableCompat = AndroidX.Core.Graphics.Drawable.DrawableCompat;
+using ActionBarDrawerToggle = AndroidX.AppCompat.App.ActionBarDrawerToggle;
+#else
 using Android.Support.V7.Widget;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
+using ADrawableCompat = Android.Support.V4.Graphics.Drawable.DrawableCompat;
+using Android.Support.V7.Graphics.Drawable;
+using Android.Support.Design.Widget;
+using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
+#endif
 using Android.Views;
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ActionBarDrawerToggle = Android.Support.V7.App.ActionBarDrawerToggle;
 using AView = Android.Views.View;
 using LP = Android.Views.ViewGroup.LayoutParams;
 using R = Android.Resource;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
-using ADrawableCompat = Android.Support.V4.Graphics.Drawable.DrawableCompat;
 using ATextView = global::Android.Widget.TextView;
-using Android.Support.Design.Widget;
 
 namespace Xamarin.Forms.Platform.Android
 {
