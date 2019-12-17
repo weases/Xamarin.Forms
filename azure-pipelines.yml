@@ -71,7 +71,7 @@ jobs:
     buildPlatform: $(DefaultBuildPlatform)
     provisionatorPath : 'build/provisioning/provisioning.csx'
     slnPath: '.Xamarin.Forms.Android.nuget.sln'
-    androidOnly: 'true'
+    includeincludeNonAndroid: 'false'
 
 - template: build/steps/build-windows.yml
   parameters:

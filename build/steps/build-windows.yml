@@ -16,7 +16,8 @@ parameters:
   artifactsName: 'win_build'
   nunitTestAdapterFolder: 'packages/NUnitTestAdapter.AnyVersion/build/'
   nunitTestFolder: '$(build.sourcesdirectory)'
-  androidOnly: 'false'
+  includeAndroid: 'true'
+  includeincludeNonAndroid: 'true'
 
 jobs:
   - job: ${{ parameters.name }}
@@ -90,7 +91,7 @@ jobs:
 
     - task: CopyFiles@2
       displayName: 'Copy Non Android dlls'
-      condition: eq('${{ parameters.androidOnly }}', false)
+      condition: eq('${{ parameters.includeNonAndroid }}', true)
       inputs:
         Contents: |
           Stubs/**/bin/**/*.dll
@@ -176,7 +177,7 @@ jobs:
         
     - task: CopyFiles@2
       displayName: 'Copy Android Files dlls'
-      condition: eq('${{ parameters.androidOnly }}', true)
+      condition: eq('${{ parameters.includeAndroid }}', true)
       inputs:
         Contents: |
           Stubs/**/bin/**/*.dll
