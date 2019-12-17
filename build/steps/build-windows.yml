@@ -176,6 +176,7 @@ jobs:
         
     - task: CopyFiles@2
       displayName: 'Copy Android Files dlls'
+      condition: eq(variables['androidOnly'], 'true')
       inputs:
         Contents: |
           Stubs/**/bin/**/*.dll
