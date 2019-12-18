@@ -53,9 +53,6 @@ namespace Xamarin.Forms.Platform.Android
 				_platform = platform;
 			}
 
-#if __ANDROID_29__
-			[Obsolete]
-#endif
 			public override global::Android.Views.View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 			{
 				return _content;

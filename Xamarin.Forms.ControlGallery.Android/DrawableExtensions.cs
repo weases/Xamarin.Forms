@@ -2,7 +2,11 @@
 using ADrawable = Android.Graphics.Drawables.Drawable;
 using AColorFilter = Android.Graphics.ColorFilter;
 using AColor = Android.Graphics.Color;
+#if __ANDROID_29__
+using ADrawableCompat = AndroidX.Core.Graphics.Drawable.DrawableCompat;
+#else
 using ADrawableCompat = Android.Support.V4.Graphics.Drawable.DrawableCompat;
+#endif
 using Android.Graphics;
 
 namespace Xamarin.Forms.Platform.Android
