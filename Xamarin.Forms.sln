@@ -196,7 +196,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.DualScreen", 
 		{3B72465B-ACAE-43AE-9327-10F372FE5F80} = {3B72465B-ACAE-43AE-9327-10F372FE5F80}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xamarin.Forms.DualScreen.UnitTests", "Xamarin.Forms.DualScreen.UnitTests\Xamarin.Forms.DualScreen.UnitTests.csproj", "{00D50743-7821-4293-92F2-7C614C256BD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Xamarin.Forms.DualScreen.UnitTests", "Xamarin.Forms.DualScreen.UnitTests\Xamarin.Forms.DualScreen.UnitTests.csproj", "{00D50743-7821-4293-92F2-7C614C256BD6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
