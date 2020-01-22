@@ -18,6 +18,14 @@ namespace Xamarin.Forms
 		public const string VisibleItemVisualState = "VisibleItem";
 		public const string DefaultItemVisualState = "DefaultItem";
 
+		public static readonly BindableProperty LoopProperty = BindableProperty.Create(nameof(Loop), typeof(bool), typeof(CarouselView), false);
+
+		public bool Loop
+		{
+			get { return (bool)GetValue(LoopProperty); }
+			set { SetValue(LoopProperty, value); }
+		}
+
 		public static readonly BindableProperty PeekAreaInsetsProperty = BindableProperty.Create(nameof(PeekAreaInsets), typeof(Thickness), typeof(CarouselView), default(Thickness));
 
 		public Thickness PeekAreaInsets
@@ -66,7 +74,7 @@ namespace Xamarin.Forms
 		}
 
 		public static readonly BindableProperty CurrentItemProperty =
-		BindableProperty.Create(nameof(CurrentItem), typeof(object), typeof(CarouselView), default, BindingMode.TwoWay, 
+		BindableProperty.Create(nameof(CurrentItem), typeof(object), typeof(CarouselView), default, BindingMode.TwoWay,
 			propertyChanged: CurrentItemPropertyChanged);
 
 		public static readonly BindableProperty CurrentItemChangedCommandProperty =
@@ -186,7 +194,7 @@ namespace Xamarin.Forms
 			}
 			catch (InvalidOperationException)
 			{
-			
+
 			}
 		}
 
@@ -200,7 +208,13 @@ namespace Xamarin.Forms
 
 		protected override void OnScrolled(ItemsViewScrolledEventArgs e)
 		{
-			CurrentItem = GetItemForPosition(this, e.CenterItemIndex);
+			var realIndex = e.CenterItemIndex;
+			if(Loop)
+			{
+				realIndex = e.CenterItemIndex % (ItemsSource as IList).Count;
+			}
+
+			CurrentItem = GetItemForPosition(this, realIndex);
 
 			base.OnScrolled(e);
 		}
