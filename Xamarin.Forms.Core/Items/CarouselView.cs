@@ -209,7 +209,7 @@ namespace Xamarin.Forms
 		protected override void OnScrolled(ItemsViewScrolledEventArgs e)
 		{
 			var realIndex = e.CenterItemIndex;
-			if(Loop)
+			if (Loop)
 			{
 				realIndex = e.CenterItemIndex % (ItemsSource as IList).Count;
 			}

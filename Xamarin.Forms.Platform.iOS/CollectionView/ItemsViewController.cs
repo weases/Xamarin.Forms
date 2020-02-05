@@ -122,6 +122,8 @@ namespace Xamarin.Forms.Platform.iOS
 			ItemsSource = CreateItemsViewSource();
 			ItemsViewLayout.GetPrototype = GetPrototype;
 
+			CollectionView = CreateUICollectionView();
+
 			Delegator = CreateDelegator();
 			CollectionView.Delegate = Delegator;
 
@@ -168,6 +170,11 @@ namespace Xamarin.Forms.Platform.iOS
 			CollectionView.ReloadData();
 
 			base.WillAnimateRotation(toInterfaceOrientation, duration);
+		}
+
+		protected virtual UICollectionView CreateUICollectionView()
+		{
+			return new UICollectionView(View.Bounds, ItemsViewLayout);
 		}
 
 		protected virtual UICollectionViewDelegateFlowLayout CreateDelegator()
