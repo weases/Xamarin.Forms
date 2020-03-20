@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 #if NETSTANDARD1_0
 using System.Linq;
@@ -104,7 +105,7 @@ namespace Xamarin.Forms
 			SendPageAppearing((ContentCache ?? Content) as Page);
 		}
 
-		void SendPageAppearing(Page page)
+		async void SendPageAppearing(Page page)
 		{
 			if (page == null)
 				return;
@@ -114,13 +115,18 @@ namespace Xamarin.Forms
 				page.ParentSet += OnPresentedPageParentSet;
 				void OnPresentedPageParentSet(object sender, EventArgs e)
 				{
-					page.SendAppearing();
+					var p = (Page)sender;
+					if (p.Parent != null)
+						SendPageAppearing(p);
+
 					(sender as Page).ParentSet -= OnPresentedPageParentSet;
 				}
 			}
 			else
-			{
+			{				
 				page.SendAppearing();
+				var routePath = (this.Parent.Parent.Parent as Shell).RouteState;
+				await ShellPartAppearing.AppearingAsync(new ShellLifecycleArgs(this, routePath.CurrentRoute.PathParts.FirstOrDefault(x => x.ShellPart == this), routePath.CurrentRoute));
 			}
 		}
 
