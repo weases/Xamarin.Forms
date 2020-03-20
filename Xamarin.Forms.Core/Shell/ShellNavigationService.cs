@@ -58,6 +58,11 @@ namespace Xamarin.Forms
 			return Task.FromResult(args.FutureState);
 		}
 
+		public virtual Task NavigatedToAsync(ShellNavigationArgs args)
+		{
+			return Task.Delay(0);
+		}
+
 		public virtual Task<ShellRouteState> ParseAsync(ShellUriParserArgs args)
 		{
 			var navigationRequest = ShellUriHandler.GetNavigationRequest(args.Shell, args.Uri, false);
@@ -302,6 +307,8 @@ namespace Xamarin.Forms
 	{
 		// this will return the state change. If you want to cancel navigation then just return null or current state
 		Task<ShellRouteState> NavigatingToAsync(ShellNavigationArgs args);
+		// this will return the state change. If you want to cancel navigation then just return null or current state
+		Task NavigatedToAsync(ShellNavigationArgs args);
 	}
 
 	public interface IShellContentCreator

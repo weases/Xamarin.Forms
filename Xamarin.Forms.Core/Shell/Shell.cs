@@ -1024,7 +1024,7 @@ namespace Xamarin.Forms
 		}
 
 
-		protected virtual void OnNavigated(ShellNavigatedEventArgs args)
+		protected async virtual void OnNavigated(ShellNavigatedEventArgs args)
 		{
 			if (_accumulateNavigatedEvents)
 				_accumulatedEvent = args;
@@ -1033,11 +1033,16 @@ namespace Xamarin.Forms
 				var content = CurrentItem?.CurrentItem?.CurrentItem;
 				if (content != null)
 				{
-					content.OnAppearing(() => Navigated?.Invoke(this, args));
+					content.OnAppearing(async () =>
+					{
+						Navigated?.Invoke(this, args);
+						await ShellNavigationRequest.NavigatedToAsync(new ShellNavigationArgs(this, null));
+					});
 				}
 				else
 				{
 					Navigated?.Invoke(this, args);
+					await ShellNavigationRequest.NavigatedToAsync(new ShellNavigationArgs(this, null));
 				}
 			}
 		}
