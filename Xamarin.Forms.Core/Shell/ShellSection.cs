@@ -348,7 +348,7 @@ namespace Xamarin.Forms
 							whereToStartNavigation++;
 							
 							if (i < LogicalChildren.Count)
-								ShellApplyParameters.ApplyParameters(new ShellLifecycleArgs((BaseShellItem)LogicalChildren[i], globalRoutes[i], currentRoute));
+								await ShellApplyParameters.ApplyParametersAsync(new ShellLifecycleArgs((BaseShellItem)LogicalChildren[i], globalRoutes[i], currentRoute));
 							else
 								Shell.ApplyQueryAttributes(navPage, currentRoute.NavigationParameters, isLast);
 
@@ -385,7 +385,7 @@ namespace Xamarin.Forms
 					if (content == null)
 						break;
 
-					ShellApplyParameters.ApplyParameters(new ShellLifecycleArgs((BaseShellItem)LogicalChildren[i], globalRoutes[i], currentRoute));
+					await ShellApplyParameters.ApplyParametersAsync(new ShellLifecycleArgs((BaseShellItem)LogicalChildren[i], globalRoutes[i], currentRoute));
 				}
 			}
 			

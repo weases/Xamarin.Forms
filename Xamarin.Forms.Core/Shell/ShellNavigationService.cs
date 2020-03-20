@@ -25,9 +25,10 @@ namespace Xamarin.Forms
 			return Task.Delay(0);
 		}
 
-		public virtual void ApplyParameters(ShellLifecycleArgs args)
+		public virtual Task ApplyParametersAsync(ShellLifecycleArgs args)
 		{
 			Shell.ApplyQueryAttributes(args.Element, args.PathPart?.NavigationParameters ?? args.RoutePath?.NavigationParameters, args.IsLast);
+			return Task.Delay(0);
 		}
 
 		public virtual Page Create(ShellContentCreateArgs args)
@@ -312,7 +313,7 @@ namespace Xamarin.Forms
 	{
 		// this is where we will apply query parameters to the shell content 
 		// this may be called multiple times. For example when the bindingcontext changes it will be called again
-		void ApplyParameters(ShellLifecycleArgs args);
+		Task ApplyParametersAsync(ShellLifecycleArgs args);
 	}
 
 	public interface IShellPartAppearing

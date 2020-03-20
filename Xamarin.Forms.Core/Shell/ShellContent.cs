@@ -5,10 +5,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 
-#if NETSTANDARD1_0
-using System.Linq;
-#endif
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms.Internals;

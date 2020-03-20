@@ -501,12 +501,12 @@ namespace Xamarin.Forms
 
 			if (shellItem != null)
 			{
-				ShellApplyParameters.ApplyParameters(new ShellLifecycleArgs(shellItem, pathParts[0], currentRoute));
+				await ShellApplyParameters.ApplyParametersAsync(new ShellLifecycleArgs(shellItem, pathParts[0], currentRoute));
 				bool navigatedToNewShellElement = false;
 
 				if (shellSection != null && shellContent != null)
 				{
-					ShellApplyParameters.ApplyParameters(new ShellLifecycleArgs(shellContent, pathParts[2], currentRoute));
+					await ShellApplyParameters.ApplyParametersAsync(new ShellLifecycleArgs(shellContent, pathParts[2], currentRoute));
 					if (shellSection.CurrentItem != shellContent)
 					{
 						shellSection.SetValueFromRenderer(ShellSection.CurrentItemProperty, shellContent);
@@ -516,7 +516,7 @@ namespace Xamarin.Forms
 
 				if (shellSection != null)
 				{
-					ShellApplyParameters.ApplyParameters(new ShellLifecycleArgs(shellSection, pathParts[1], currentRoute));
+					await ShellApplyParameters.ApplyParametersAsync(new ShellLifecycleArgs(shellSection, pathParts[1], currentRoute));
 					if (shellItem.CurrentItem != shellSection)
 					{
 						shellItem.SetValueFromRenderer(ShellItem.CurrentItemProperty, shellSection);
