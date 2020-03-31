@@ -28,14 +28,6 @@ namespace Xamarin.Forms.Material.Android
 			var view = inflater.Inflate(Resource.Layout.TextInputLayoutFilledBox, null);
 			_textInputLayout = (MaterialFormsTextInputLayout)view;
 			_textInputEditText = _textInputLayout.FindViewById<MaterialFormsEditText>(Resource.Id.materialformsedittext);
-
-#if __ANDROID_29__
-			AndroidX.Core.Widget.TextViewCompat.SetAutoSizeTextTypeWithDefaults(_textInputEditText, (int)AutoSizeTextType.None);
-#else			
-			global::Android.Support.V4.Widget.TextViewCompat.SetAutoSizeTextTypeWithDefaults(_textInputEditText, (int)AutoSizeTextType.None);
-#endif
-
-			//_textInputEditText.AutoSizeTextType = AutoSizeTextType.None;
 			return _textInputLayout;
 		}
 
