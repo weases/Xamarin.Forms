@@ -25,6 +25,8 @@ namespace Xamarin.Forms.Material.Android
 			SizeRequest value;
 			if (!string.IsNullOrWhiteSpace(_textInputEditText.Text))
 			{
+				// The material entry will measure to the size of the text it contains which causes 
+				// some really weird unexpected layout behaviors.
 				var text = _textInputEditText.Text;
 				_textInputEditText.Text = string.Empty;
 				value = base.GetDesiredSize(widthConstraint, heightConstraint);
