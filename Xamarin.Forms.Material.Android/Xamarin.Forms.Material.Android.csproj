@@ -11,12 +11,14 @@
   <PropertyGroup Condition=" '$(Configuration)'=='Debug' ">
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <PropertyGroup  Condition="'$(Use2017)' == 'true'">
+  <PropertyGroup Condition="'$(Use2017)' == 'true'">
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>bin\$(Configuration)\$(TargetFramework)</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\**\*" />
+    <AndroidResource Condition="'$(TargetFramework)' == 'MonoAndroid90'" Remove="Resources\values\styles_androidx.xml" />
+    <AndroidResource Condition="'$(TargetFramework)' != 'MonoAndroid90'" Remove="Resources\values\styles_android.xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'MonoAndroid10.0'">
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData" Version="2.1.0" />

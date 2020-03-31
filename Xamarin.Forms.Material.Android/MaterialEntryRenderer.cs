@@ -20,29 +20,6 @@ namespace Xamarin.Forms.Material.Android
 		{
 		}
 
-		public override SizeRequest GetDesiredSize(int widthConstraint, int heightConstraint)
-		{
-			SizeRequest value;
-			if (!string.IsNullOrWhiteSpace(_textInputEditText.Text))
-			{
-				// The material entry will measure to the size of the text it contains which causes 
-				// some really weird unexpected layout behaviors.
-				var text = _textInputEditText.Text;
-				_textInputEditText.Text = string.Empty;
-				value = base.GetDesiredSize(widthConstraint, heightConstraint);
-				_textInputEditText.Text = text;
-			}
-			else
-				value = base.GetDesiredSize(widthConstraint, heightConstraint);
-
-			return value;
-		}
-
-		protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
-		{
-			base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
-		}
-
 		protected override AView ControlUsedForAutomation => EditText;
 
 		protected override MaterialFormsTextInputLayout CreateNativeControl()
@@ -52,6 +29,13 @@ namespace Xamarin.Forms.Material.Android
 			_textInputLayout = (MaterialFormsTextInputLayout)view;
 			_textInputEditText = _textInputLayout.FindViewById<MaterialFormsEditText>(Resource.Id.materialformsedittext);
 
+#if __ANDROID_29__
+			AndroidX.Core.Widget.TextViewCompat.SetAutoSizeTextTypeWithDefaults(_textInputEditText, (int)AutoSizeTextType.None);
+#else			
+			global::Android.Support.V4.Widget.TextViewCompat.SetAutoSizeTextTypeWithDefaults(_textInputEditText, (int)AutoSizeTextType.None);
+#endif
+
+			//_textInputEditText.AutoSizeTextType = AutoSizeTextType.None;
 			return _textInputLayout;
 		}
 

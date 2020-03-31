@@ -6,7 +6,7 @@
     <attr name="materialProgressBarCircularStyle" format="reference" />
     <attr name="materialCheckBoxStyle" format="reference" />
     <!-- Material Base Theme -->
-    <style name="XamarinFormsMaterialTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="XamarinFormsMaterialTheme" parent="XamarinFormsMaterialThemeBase">
         <item name="materialButtonStyle">@style/XamarinFormsMaterialButton</item>
         <item name="materialOutlinedButtonStyle">@style/XamarinFormsMaterialButtonOutlined</item>
         <item name="materialSliderStyle">@style/XamarinFormsMaterialSlider</item>
