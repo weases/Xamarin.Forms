@@ -23,10 +23,15 @@ namespace Xamarin.Forms.Material.Android
 		Color _formsTextColor;
 		Color _formsPlaceholderColor;
 		bool _isSetup = false;
+
+#if !__ANDROID_29__
 		ColorStateList _focusedFilledColorList;
 		ColorStateList _unfocusedEmptyColorList;
-		private ColorStateList _unfocusedUnderlineColorsList;
-		private ColorStateList _focusedUnderlineColorsList;
+		ColorStateList _unfocusedUnderlineColorsList;
+		ColorStateList _focusedUnderlineColorsList;
+#else
+		ColorStateList _placeholderColorsList;
+#endif
 		static readonly int[][] s_colorStates = { new[] { global::Android.Resource.Attribute.StateEnabled }, new[] { -global::Android.Resource.Attribute.StateEnabled } };
 		bool _disposed = false;
 
@@ -54,6 +59,7 @@ namespace Xamarin.Forms.Material.Android
 			var underlineColors = MaterialColors.GetUnderlineColor(_formsPlaceholderColor);
 			var placeHolderColors = MaterialColors.GetPlaceHolderColor(_formsPlaceholderColor, _formsTextColor);
 
+#if !__ANDROID_29__
 			// I realize these are the same but I have to set it to a difference instance
 			// otherwise when focused it won't change to the color I want it to and it'll just think
 			// I'm not actually changing anything
@@ -62,6 +68,9 @@ namespace Xamarin.Forms.Material.Android
 
 			_focusedFilledColorList = MaterialColors.CreateEntryFilledPlaceholderColors(placeHolderColors.FloatingColor, placeHolderColors.FloatingColor);
 			_unfocusedEmptyColorList = MaterialColors.CreateEntryFilledPlaceholderColors(placeHolderColors.InlineColor, placeHolderColors.FloatingColor);
+#else
+			_placeholderColorsList = MaterialColors.CreateEntryFilledPlaceholderColors(placeHolderColors.InlineColor, placeHolderColors.FloatingColor);
+#endif
 
 			var textColor = MaterialColors.GetEntryTextColor(formsTextColor).ToArgb();
 			EditText.SetTextColor(new ColorStateList(s_colorStates, new[] { textColor, textColor }));
@@ -83,15 +92,25 @@ namespace Xamarin.Forms.Material.Android
 				ResetTextColors(formsTextColor, formsPlaceHolderColor);
 			}
 
+#if __ANDROID_29__
+			this.DefaultHintTextColor = _placeholderColorsList;
+			this.HintTextColor = _placeholderColorsList.ToDefaultOnlyColorStateList();
+			this.BoxStrokeColor = _placeholderColorsList.DefaultColor;
+#else
 			if(HasFocus)
 				ViewCompat.SetBackgroundTintList(EditText, _focusedUnderlineColorsList);
+
 			else
 				ViewCompat.SetBackgroundTintList(EditText, _unfocusedUnderlineColorsList);
-
 			if (HasFocus || !string.IsNullOrWhiteSpace(EditText.Text))
+			{
 				this.DefaultHintTextColor = _focusedFilledColorList;
+			}
 			else
+			{
 				this.DefaultHintTextColor = _unfocusedEmptyColorList;
+			}
+#endif
 		}
 
 		void ApplyTheme() => ApplyTheme(_formsTextColor, _formsPlaceholderColor);
@@ -125,7 +144,7 @@ namespace Xamarin.Forms.Material.Android
 				Hint = hint;
 				// EditText.Hint => Hint
 				// It is impossible to reset it but you can make it invisible.
-				EditText.SetHintTextColor(global::Android.Graphics.Color.Transparent);
+				//EditText.SetHintTextColor(global::Android.Graphics.Color.Transparent);
 			}
 		}
 

@@ -729,7 +729,7 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 				return;
 			}
 
-#if DEBUG
+#if DEBUG && !__ANDROID_29__
 			// Enables logging of moveToState operations to logcat
 			FragmentManager.EnableDebugLogging(true);
 #endif
@@ -813,7 +813,7 @@ namespace Xamarin.Forms.Platform.Android.AppCompat
 			var tcs = new TaskCompletionSource<bool>();
 			Fragment fragment = GetFragment(page, removed, popToRoot);
 
-#if DEBUG
+#if DEBUG && !__ANDROID_29__
 			// Enables logging of moveToState operations to logcat
 			FragmentManager.EnableDebugLogging(true);
 #endif

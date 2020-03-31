@@ -79,27 +79,27 @@ namespace Xamarin.Forms.Material.Tizen
 
 		public static (PlatformColor InlineColor, PlatformColor FloatingColor) GetPlaceHolderColor(Color placeholderColor, Color textColor)
 		{
-			PlatformColor color;
+			PlatformColor inlineColor;
+			PlatformColor floatingColor;
+			float inlineAlpha = kFilledTextFieldOnSurfaceAlpha + kFilledPlaceHolderOffset;
 
 			if (placeholderColor == Color.Default)
 			{
-				if (textColor == Color.Default)
-					color = MaterialColors.Light.OnSurfaceColor;
-				else
-					color = ToPlatformColor(textColor);
+				inlineColor = WithAlpha(MaterialColors.Light.OnSurfaceColor, inlineAlpha);
+				floatingColor = MaterialColors.Light.PrimaryColor;
 			}
 			else
-				color = ToPlatformColor(placeholderColor);
-
-			var inlineColor = WithAlpha(color, kFilledTextFieldOnSurfaceAlpha + kFilledPlaceHolderOffset);
-			var floatingColor = WithAlpha(color, kFilledTextFieldActiveAlpha + kFilledPlaceHolderOffset);
+			{
+				inlineColor = WithAlpha(ToPlatformColor(placeholderColor), inlineAlpha);
+				floatingColor = ToPlatformColor(placeholderColor);
+			}
 
 			return (inlineColor, floatingColor);
 		}
 
-		public static (PlatformColor FocusedColor, PlatformColor UnFocusedColor) GetUnderlineColor(Color textColor)
+		public static (PlatformColor FocusedColor, PlatformColor UnFocusedColor) GetUnderlineColor(Color placeholderColor)
 		{
-			PlatformColor color = GetEntryTextColor(textColor);
+			PlatformColor color = GetEntryTextColor(placeholderColor);
 			return (color, WithAlpha(color, kFilledTextFieldIndicatorLineAlpha));
 		}
 
@@ -172,6 +172,16 @@ namespace Xamarin.Forms.Material.Tizen
 
 		public static ColorStateList CreateEntryFilledPlaceholderColors(PlatformColor inlineColor, PlatformColor floatingColor)
 		{
+#if __ANDROID_29__
+			int[][] States =
+			{
+				new []{ ~global::Android.Resource.Attribute.StateEnabled },
+				new int[0] { }
+			};
+
+			var colors = new int[] { inlineColor, floatingColor };
+			return new ColorStateList(States, colors);
+#else
 			int[][] States =
 			{
 				new []{ global::Android.Resource.Attribute.StateEnabled, global::Android.Resource.Attribute.StatePressed  },
@@ -180,12 +190,19 @@ namespace Xamarin.Forms.Material.Tizen
 
 			var colors = new int[] { floatingColor, inlineColor };
 			return new ColorStateList(States, colors);
+#endif
 		}
 
 		public static ColorStateList CreateEntryUnderlineColors(PlatformColor focusedColor, PlatformColor unfocusedColor)
 		{
+#if __ANDROID_29__
 			var colors = new int[] { focusedColor, unfocusedColor };
 			return new ColorStateList(EntryUnderlineStates, colors);
+#else
+
+			var colors = new int[] { focusedColor, unfocusedColor };
+			return new ColorStateList(EntryUnderlineStates, colors);
+#endif
 		}
 
 		internal static PlatformColor WithAlpha(this PlatformColor color, double alpha) =>

@@ -20,6 +20,27 @@ namespace Xamarin.Forms.Material.Android
 		{
 		}
 
+		public override SizeRequest GetDesiredSize(int widthConstraint, int heightConstraint)
+		{
+			SizeRequest value;
+			if (!string.IsNullOrWhiteSpace(_textInputEditText.Text))
+			{
+				var text = _textInputEditText.Text;
+				_textInputEditText.Text = string.Empty;
+				value = base.GetDesiredSize(widthConstraint, heightConstraint);
+				_textInputEditText.Text = text;
+			}
+			else
+				value = base.GetDesiredSize(widthConstraint, heightConstraint);
+
+			return value;
+		}
+
+		protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
+		{
+			base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+		}
+
 		protected override AView ControlUsedForAutomation => EditText;
 
 		protected override MaterialFormsTextInputLayout CreateNativeControl()
