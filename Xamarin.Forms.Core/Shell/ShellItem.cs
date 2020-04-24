@@ -94,6 +94,23 @@ namespace Xamarin.Forms
 			remove { ((ShellSectionCollection)Items).VisibleItemsChanged -= value; }
 		}
 
+		bool IShellItemController.ShowTabs
+		{
+			get
+			{
+				var displayedPage = CurrentItem?.DisplayedPage;
+				if (displayedPage == null)
+					return true;
+
+				Shell shell = Parent as Shell;
+				if (shell == null)
+					return true;
+
+				bool defaultShow = ShellItemController.GetItems().Count > 1;
+				return shell.GetEffectiveValue<bool>(Shell.TabBarIsVisibleProperty, defaultShow, displayedPage);
+			}
+		}
+
 		#endregion IShellItemController
 
 		#region IPropertyPropagationController
@@ -119,7 +136,10 @@ namespace Xamarin.Forms
 			ShellItemController.ItemsCollectionChanged += (_, args) =>
 			{
 				if (args.OldItems == null)
+				{
+					SendStructureChanged();
 					return;
+				}
 
 				foreach (Element item in args.OldItems)
 				{
@@ -172,9 +192,6 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-#if DEBUG
-		[Obsolete ("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellItem(ShellSection shellSection)
 		{
 			return CreateFromShellSection(shellSection);
@@ -195,19 +212,10 @@ namespace Xamarin.Forms
 			return result;
 		}
 
-#if DEBUG
-		[Obsolete("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellItem(ShellContent shellContent) => (ShellSection)shellContent;
 
-#if DEBUG
-		[Obsolete("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellItem(TemplatedPage page) => (ShellSection)(ShellContent)page;
 
-#if DEBUG
-		[Obsolete("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellItem(MenuItem menuItem) => new MenuShellItem(menuItem);
 
 		public IPlatformElementConfiguration<T, ShellItem> On<T>() where T : IConfigPlatform

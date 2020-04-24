@@ -243,12 +243,17 @@ namespace Xamarin.Forms
 			((ShellContentCollection)Items).VisibleItemsChangedInternal += (_, args) =>
 			{
 				if (args.OldItems == null)
+				{
+					SendStructureChanged();
 					return;
+				}
 
 				foreach(Element item in args.OldItems)
 				{
 					OnVisibleChildRemoved(item);
 				}
+
+				SendStructureChanged();
 			};
 
 			Navigation = new NavigationImpl(this);
@@ -266,7 +271,7 @@ namespace Xamarin.Forms
 
 		internal override ReadOnlyCollection<Element> LogicalChildrenInternal => _logicalChildrenReadOnly ?? (_logicalChildrenReadOnly = new ReadOnlyCollection<Element>(_logicalChildren));
 
-		Page DisplayedPage
+		internal Page DisplayedPage
 		{
 			get { return _displayedPage; }
 			set
@@ -306,17 +311,11 @@ namespace Xamarin.Forms
 			return CreateFromShellContent((ShellContent)page);
 		}
 
-#if DEBUG
-		[Obsolete("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellSection(ShellContent shellContent)
 		{
 			return CreateFromShellContent(shellContent);
 		}
 
-#if DEBUG
-		[Obsolete("Please dont use this in core code... its SUPER hard to debug when this happens", true)]
-#endif
 		public static implicit operator ShellSection(TemplatedPage page)
 		{
 			return (ShellSection)(ShellContent)page;

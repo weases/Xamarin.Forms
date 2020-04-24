@@ -348,7 +348,7 @@ namespace Xamarin.Forms.Core.UnitTests
 		{
 			var shell = new Shell();
 			ShellTestPage pagetoTest = new ShellTestPage();
-			pagetoTest.BindingContext = pagetoTest;		
+			pagetoTest.BindingContext = pagetoTest;
 			var one = CreateShellItem(pagetoTest, shellContentRoute: "content", templated: useDataTemplates);
 			shell.Items.Add(one);
 			ShellTestPage page = null;
@@ -1269,10 +1269,10 @@ namespace Xamarin.Forms.Core.UnitTests
 			var classStyle = new Style(typeof(Grid))
 			{
 				Setters = {
-					new Setter 
+					new Setter
 					{
 						Property = VisualStateManager.VisualStateGroupsProperty,
-						Value = groups 
+						Value = groups
 					}
 				},
 				Class = FlyoutItem.LayoutStyle,
@@ -1290,6 +1290,57 @@ namespace Xamarin.Forms.Core.UnitTests
 			Assert.AreEqual(Color.Red, label.BackgroundColor);
 			Assert.IsTrue(VisualStateManager.GoToState(grid, "Selected"));
 			Assert.AreEqual(Color.Green, label.BackgroundColor);
+		}
+
+
+		[TestCase("ContentPage")]
+		[TestCase("ShellItem")]
+		[TestCase("Shell")]
+		public void TabBarIsVisible(string test)
+		{
+			Shell shell = new Shell();
+			ContentPage page = new ContentPage();
+			var shellItem = CreateShellItem(page);
+			shell.Items.Add(shellItem);
+
+			switch (test)
+			{
+				case "ContentPage":
+					Shell.SetTabBarIsVisible(page, false);
+					break;
+				case "ShellItem":
+					Shell.SetTabBarIsVisible(shellItem, false);
+					break;
+				case "Shell":
+					Shell.SetTabBarIsVisible(shell, false);
+					break;
+			}
+
+			Assert.IsFalse((shellItem as IShellItemController).ShowTabs);
+		}
+
+		[Test]
+		public void SendStructureChangedFiresWhenAddingItems()
+		{
+			Shell shell = new Shell();
+			shell.Items.Add(CreateShellItem());
+
+			int count = 0;
+			int previousCount = 0;
+			(shell as IShellController).StructureChanged += (_, __) => count++;
+
+
+			shell.Items.Add(CreateShellItem());
+			Assert.Greater(count, previousCount, "StructureChanged not fired when adding Shell Item");
+
+			previousCount = count;
+			shell.CurrentItem.Items.Add(CreateShellSection());
+			Assert.Greater(count, previousCount, "StructureChanged not fired when adding Shell Section");
+
+			previousCount = count;
+			shell.CurrentItem.CurrentItem.Items.Add(CreateShellContent());
+			Assert.Greater(count, previousCount, "StructureChanged not fired when adding Shell Content");
+			
 		}
 
 

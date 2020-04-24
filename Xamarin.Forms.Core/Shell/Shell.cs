@@ -1169,10 +1169,13 @@ namespace Xamarin.Forms
 
 		internal FlyoutBehavior GetEffectiveFlyoutBehavior() => GetEffectiveValue(Shell.FlyoutBehaviorProperty, FlyoutBehavior);
 
-		T GetEffectiveValue<T>(BindableProperty property, T defaultValue)
+		internal T GetEffectiveValue<T>(BindableProperty property, T defaultValue)
 		{
-			Element element = GetVisiblePage();
+			return GetEffectiveValue<T>(property, defaultValue, GetVisiblePage());
+		}
 
+		internal T GetEffectiveValue<T>(BindableProperty property, T defaultValue, Element element)
+		{
 			while (element != this && element != null)
 			{
 				if (element.IsSet(property))
