@@ -228,6 +228,60 @@ Task("provision-monosdk")
             await Boots(monoSDK);
     });
 
+Task("provision-uitests-uwp")
+    .Description("Installs and Starts WindowsApplicationDriver. Use WinAppDriverPath to specify WinAppDriver Location.")
+    .Does(() =>
+    {
+        if(IsRunningOnWindows())
+        {
+            string installPath = Argument("WinAppDriverPath", @"C:\Program Files (x86)\");
+            string driverPath = System.IO.Path.Combine(installPath, "Windows Application Driver");
+            if(!DirectoryExists(driverPath))
+                InstallMsi("https://github.com/microsoft/WinAppDriver/releases/download/v1.2-RC/WindowsApplicationDriver.msi", installPath);
+
+            var info = new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = "WinAppDriver",
+                WorkingDirectory = driverPath
+            };
+
+            Information("Starting: {0}", driverPath);
+            System.Diagnostics.Process.Start(info);
+        }
+        
+    });
+
+void InstallMsi(string msiFile, string installTo)
+{
+    string installerPath = $"{System.IO.Path.GetTempPath()}" + "InstallFile.msi";
+        
+    try{
+        Information ("Installing: {0}", msiFile);
+        Information("Installing into: {0}", installTo);
+        DownloadFile(msiFile, installerPath);
+        Information("File Downloaded To: {0}", installerPath);
+
+        var result = StartProcess("msiexec", new ProcessSettings {
+            Arguments = new ProcessArgumentBuilder()
+
+                .Append(@"/a")
+                .Append(installerPath)
+                .Append("TARGETDIR=\"" + installTo + "\"")
+                .Append("/qn")
+            }
+        );
+
+        if(result != 0)
+            throw new Exception("Failed to install: " + msiFile);
+
+        Information("File Installed: {0}", result);
+    }
+    finally{
+        DeleteFile(installerPath);
+
+    }
+}
+
 Task("provision")
     .Description("Install SDKs required to build project")
     .IsDependentOn("provision-macsdk")

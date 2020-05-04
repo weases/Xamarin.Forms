@@ -13,6 +13,7 @@ parameters:
   includeUwp: 'true'
   includeAndroid: 'true'
   includeNonUwpAndNonAndroid: 'true'
+  runUITests: 'false'
 
 steps:
   - checkout: self
@@ -61,6 +62,18 @@ steps:
       searchFolder: ${{ parameters.nunitTestFolder }}
       codeCoverageEnabled: true
       testRunTitle: '$(BuildConfiguration)_UnitTests'
+      configuration: '$(BuildConfiguration)'
+      diagnosticsEnabled: true
+
+  - task: VSTest@2
+    displayName: 'UI Tests'
+    condition: eq(${{ parameters.runUITests }}, 'true')
+    inputs:
+      testAssemblyVer2: |
+        **/bin/$(BuildConfiguration)/Xamarin.Forms.Core.Windows.UITests.dll
+      searchFolder: ${{ parameters.nunitTestFolder }}
+      codeCoverageEnabled: true
+      testRunTitle: '$(BuildConfiguration)_UITests'
       configuration: '$(BuildConfiguration)'
       diagnosticsEnabled: true
 
