@@ -18,6 +18,11 @@ namespace Xamarin.Forms.Platform.iOS
 			Constraint.Active = true;
 		}
 
+		public override void ClearConstraints()
+		{
+			Constraint.Constant = 0;
+		}
+
 		public override void ConstrainTo(CGSize constraint)
 		{
 			Constraint.Constant = constraint.Height;
@@ -28,5 +33,4 @@ namespace Xamarin.Forms.Platform.iOS
 			return new CGSize(Label.IntrinsicContentSize.Width, Constraint.Constant);
 		}
 	}
-
 }

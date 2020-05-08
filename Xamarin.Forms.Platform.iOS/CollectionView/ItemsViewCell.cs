@@ -43,6 +43,7 @@ namespace Xamarin.Forms.Platform.iOS
 
 		public abstract void ConstrainTo(nfloat constant);
 		public abstract void ConstrainTo(CGSize constraint);
+		public abstract void ClearConstraints();
 		public abstract CGSize Measure();
 	}
 }

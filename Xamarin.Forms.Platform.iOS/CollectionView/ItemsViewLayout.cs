@@ -10,7 +10,6 @@ namespace Xamarin.Forms.Platform.iOS
 	public abstract class ItemsViewLayout : UICollectionViewFlowLayout
 	{
 		readonly ItemsLayout _itemsLayout;
-		bool _determiningCellSize;
 		bool _disposed;
 		bool _adjustContentOffset;
 		CGSize _adjustmentSize0;
@@ -138,11 +137,6 @@ namespace Xamarin.Forms.Platform.iOS
 
 		public void PrepareCellForLayout(ItemsViewCell cell)
 		{
-			if (_determiningCellSize)
-			{
-				return;
-			}
-
 			if (EstimatedItemSize == CGSize.Empty)
 			{
 				cell.ConstrainTo(ItemSize);
@@ -198,8 +192,6 @@ namespace Xamarin.Forms.Platform.iOS
 				return;
 			}
 
-			_determiningCellSize = true;
-
 			// We set the EstimatedItemSize here for two reasons:
 			// 1. If we don't set it, iOS versions below 10 will crash
 			// 2. If GetPrototype() cannot return a cell because the items source is empty, we need to have
@@ -210,13 +202,11 @@ namespace Xamarin.Forms.Platform.iOS
 
 			if (!(GetPrototype() is ItemsViewCell prototype))
 			{
-				_determiningCellSize = false;
 				return;
 			}
 
 			// Constrain and measure the prototype cell
 			prototype.ConstrainTo(ConstrainedDimension);
-
 			var measure = prototype.Measure();
 
 			if (ItemSizingStrategy == ItemSizingStrategy.MeasureFirstItem)
@@ -232,8 +222,6 @@ namespace Xamarin.Forms.Platform.iOS
 				// Autolayout is now enabled, and this is the size used to guess scrollbar size and progress
 				EstimatedItemSize = measure;
 			}
-
-			_determiningCellSize = false;
 		}
 
 		bool ConstraintsMatchScrollDirection(CGSize size)
