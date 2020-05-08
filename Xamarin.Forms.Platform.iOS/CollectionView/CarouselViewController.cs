@@ -11,6 +11,7 @@ namespace Xamarin.Forms.Platform.iOS
 		protected readonly CarouselView Carousel;
 
 		bool _initialPositionSet;
+		bool _viewInitialized;
 		List<View> _oldViews;
 		int _gotoPosition = -1;
 		CGSize _size;
@@ -42,7 +43,6 @@ namespace Xamarin.Forms.Platform.iOS
 			{
 				_viewInitialized = true;
 				_size = CollectionView.Bounds.Size;
-				
 			}
 
 			UpdateVisualStates();
