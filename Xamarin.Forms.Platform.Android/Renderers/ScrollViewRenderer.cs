@@ -18,6 +18,7 @@ namespace Xamarin.Forms.Platform.Android
 {
 	public class ScrollViewRenderer : NestedScrollView, IVisualElementRenderer, IEffectControlProvider, IScrollView
 	{
+		Context _context;
 		ScrollViewContainer _container;
 		HorizontalScrollView _hScrollView;
 		ScrollBarVisibility _defaultHorizontalScrollVisibility = 0;
@@ -32,8 +33,9 @@ namespace Xamarin.Forms.Platform.Android
 		LayoutDirection _prevLayoutDirection = LayoutDirection.Ltr;
 		bool _checkedForRtlScroll = false;
 
-		public ScrollViewRenderer(Context context) : base(context)
+		public ScrollViewRenderer(Context context) : base(new ContextThemeWrapper(context, Resource.Style.NestedScrollBarStyle))
 		{
+			_context = context;
 		}
 
 		[Obsolete("This constructor is obsolete as of version 2.5. Please use ScrollViewRenderer(Context) instead.")]
@@ -90,7 +92,7 @@ namespace Xamarin.Forms.Platform.Android
 				if (_container == null)
 				{
 					Tracker = new VisualElementTracker(this);
-					_container = new ScrollViewContainer(_view, Context);
+					_container = new ScrollViewContainer(_view, _context);
 				}
 
 				_view.PropertyChanged += HandlePropertyChanged;

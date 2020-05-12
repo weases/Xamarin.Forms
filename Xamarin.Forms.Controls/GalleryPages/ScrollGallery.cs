@@ -20,44 +20,50 @@ namespace Xamarin.Forms.Controls
 			root.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto });
 			root.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto });
 			root.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto });
+			root.RowDefinitions.Add (new RowDefinition () { Height = GridLength.Auto }); 
 			root.RowDefinitions.Add (new RowDefinition ());
 
 			var btnStack1 = new StackLayout { Orientation = StackOrientation.Horizontal };
-			var btnStack = new StackLayout { Orientation = StackOrientation.Horizontal };
+			var btnStack2 = new StackLayout { Orientation = StackOrientation.Horizontal };
+			var btnStack3 = new StackLayout { Orientation = StackOrientation.Horizontal };
+
 			var btn = new Button { Text = "Scroll to 100" };
 			var btn4 = new Button { Text = "Scroll to 100 no anim" };
 			var btn1 = new Button { Text = "Start" };
 			var btn2 = new Button { Text = "Center" };
 			var btn3 = new Button { Text = "End" };
-			var btn7 = new Button { Text = "Toggle Scroll Bar Visibility" };
+			var btn7 = new Button { Text = "Toggle Scroll Bar Visibility", WidthRequest = 120 };
 			var btn6 = new Button { Text = "MakeVisible", HorizontalOptions= LayoutOptions.CenterAndExpand, BackgroundColor = Color.Accent };
-			var btn8 = new Button { Text = "Toggle Orientation" };
-			var btn9 = new Button { Text = "Default Scroll Bar Visibility" };
+			var btn8 = new Button { Text = "Toggle Orientation", WidthRequest = 120 };
+			var btn9 = new Button { Text = "Default Scroll Bar Visibility", WidthRequest = 120 };
 
 			var labelStack = new StackLayout { Orientation = StackOrientation.Horizontal };
 			var label = new Label { Text = string.Format ("X: {0}, Y: {1}", 0, 0) };
 			var scrollStatusLabel = new Label { Text = string.Empty };
 			
 			root.Children.Add (labelStack);
-			root.Children.Add (btnStack);
 			root.Children.Add (btnStack1);
+			root.Children.Add (btnStack2);
+			root.Children.Add (btnStack3);
 
-			btnStack.Children.Add (btn1);
-			btnStack.Children.Add (btn2);
-			btnStack.Children.Add (btn3);
-			btnStack.Children.Add(btn7);
-			btnStack.Children.Add(btn9);
-			btnStack.Children.Add(btn8);
+			btnStack1.Children.Add (btn1);
+			btnStack1.Children.Add (btn2);
+			btnStack1.Children.Add (btn3);
 
-			btnStack1.Children.Add (btn);
-			btnStack1.Children.Add (btn4);
+			btnStack2.Children.Add (btn);
+			btnStack2.Children.Add (btn4);
+
+			btnStack3.Children.Add(btn7);
+			btnStack3.Children.Add(btn9);
+			btnStack3.Children.Add(btn8);
 
 			labelStack.Children.Add(label);
 			labelStack.Children.Add(scrollStatusLabel);
 
-			Grid.SetRow (btnStack, 1);
-			Grid.SetRow (btnStack1, 2);
-		
+			Grid.SetRow (btnStack1, 1);
+			Grid.SetRow (btnStack2, 2);
+			Grid.SetRow (btnStack3, 3);
+
 			var grid = new Grid ();
 			grid.RowDefinitions.Add (new RowDefinition { Height = GridLength.Auto });
 			grid.RowDefinitions.Add (new RowDefinition ());
@@ -71,7 +77,7 @@ namespace Xamarin.Forms.Controls
 				Content = grid
 			};
 			root.Children.Add (_scrollview);
-			Grid.SetRow (_scrollview, 3);
+			Grid.SetRow (_scrollview, 4);
 
 			_scrollview.Scrolled+= (object sender, ScrolledEventArgs e) => {
 				label.Text = string.Format ("X: {0}, Y: {1}", e.ScrollX, e.ScrollY);

@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" 
   xmlns:app="http://schemas.android.com/apk/res-auto">
+  <style name="NestedScrollBarStyle" android:id="@+id/nestedScrollViewStyle">
+     <item name="android:scrollbars">vertical|horizontal</item>
+   </style>
   <style name="collectionViewStyle" android:id="@+id/collectionViewStyle">
     <item name="android:scrollbars">vertical|horizontal</item>
   </style>
