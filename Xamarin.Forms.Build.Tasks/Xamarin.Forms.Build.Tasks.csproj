@@ -29,6 +29,13 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+     <UpdateXlfOnBuild Condition="'$(CI)' != 'true'">true</UpdateXlfOnBuild>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(CI)' != 'true'">
+     <PackageReference Include="XliffTasks" Version="1.0.0-beta.20206.1" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Xamarin.Forms.Core\Xamarin.Forms.Core.csproj" />
     <ProjectReference Include="..\Xamarin.Forms.Xaml\Xamarin.Forms.Xaml.csproj" />
