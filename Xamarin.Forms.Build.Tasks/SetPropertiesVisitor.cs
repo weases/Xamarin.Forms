@@ -13,6 +13,8 @@ using Xamarin.Forms.Xaml;
 using static Mono.Cecil.Cil.Instruction;
 using static Mono.Cecil.Cil.OpCodes;
 
+using static Xamarin.Forms.Build.Tasks.BuildExceptionCode;
+
 namespace Xamarin.Forms.Build.Tasks
 {
 	class SetPropertiesVisitor : IXamlNodeVisitor
@@ -1042,8 +1044,8 @@ namespace Xamarin.Forms.Build.Tasks
 			MethodReference handlerRef = null;
 			if (handler.methodDef != null)
 				handlerRef = handler.methodDef.ResolveGenericParameters(handler.declTypeRef, module);
-			if (handler.methodDef == null) 
-				throw new XamlParseException($"EventHandler \"{value}\" with correct signature not found in type \"{declaringType}\"", iXmlLineInfo);
+			if (handler.methodDef == null)
+				throw new BuildException(MissingEventHandler, iXmlLineInfo, null, value, declaringType);
 
 			//FIXME: eventually get the right ctor instead fo the First() one, just in case another one could exists (not even sure it's possible).
 			var ctor = module.ImportReference(eventinfo.EventType.ResolveCached().GetConstructors().First());
