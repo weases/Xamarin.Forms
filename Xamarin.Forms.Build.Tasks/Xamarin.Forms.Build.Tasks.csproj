@@ -33,7 +33,7 @@
      <UpdateXlfOnBuild Condition="'$(CI)' != 'true'">true</UpdateXlfOnBuild>
   </PropertyGroup>
   <ItemGroup Condition="'$(CI)' != 'true'">
-     <PackageReference Include="XliffTasks" Version="1.0.0-beta.20206.1" />
+     <PackageReference Include="XliffTasks" Version="1.0.0-beta.20206.1" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,7 +24,7 @@ namespace Xamarin.Forms.Build.Tasks
 		{
 			Code = code;
 			XmlInfo = xmlInfo;
-			MessageArgs = args?.Select(a=>a.ToString()).ToArray();
+			MessageArgs = args?.Select(a=>a?.ToString()).ToArray();
 		}
 
 		protected BuildException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
