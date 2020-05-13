@@ -61,7 +61,7 @@ namespace Xamarin.Forms.Build.Tasks {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot convert &quot;{0}&quot; into &quot;{1}&quot;..
+        ///   Looks up a localized string similar to Cannot convert value &quot;{0}&quot; to &quot;{1}&quot;..
         /// </summary>
         internal static string Conversion {
             get {
@@ -79,7 +79,7 @@ namespace Xamarin.Forms.Build.Tasks {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t resolve &quot;{0}&quot; on &quot;{1}&quot;..
+        ///   Looks up a localized string similar to Cannot resolve property &quot;{0}&quot; on type &quot;{1}&quot;..
         /// </summary>
         internal static string PropertyResolution {
             get {
@@ -88,7 +88,7 @@ namespace Xamarin.Forms.Build.Tasks {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t resolve &quot;{0}&quot;..
+        ///   Looks up a localized string similar to Cannot resolve type &quot;{0}&quot;..
         /// </summary>
         internal static string TypeResolution {
             get {

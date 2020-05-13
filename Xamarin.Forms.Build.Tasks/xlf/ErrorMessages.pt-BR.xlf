@@ -3,8 +3,8 @@
   <file datatype="xml" source-language="en" target-language="pt-BR" original="../ErrorMessages.resx">
     <body>
       <trans-unit id="Conversion">
-        <source>Cannot convert "{0}" into "{1}".</source>
-        <target state="new">Cannot convert "{0}" into "{1}".</target>
+        <source>Cannot convert value "{0}" to "{1}".</source>
+        <target state="new">Cannot convert value "{0}" to "{1}".</target>
         <note>0 is a value, 1 is a type</note>
       </trans-unit>
       <trans-unit id="MissingEventHandler">
@@ -13,13 +13,13 @@
         <note>0 is the handler name, 1 is the declaring type</note>
       </trans-unit>
       <trans-unit id="PropertyResolution">
-        <source>Can't resolve "{0}" on "{1}".</source>
-        <target state="new">Can't resolve "{0}" on "{1}".</target>
+        <source>Cannot resolve property "{0}" on type "{1}".</source>
+        <target state="new">Cannot resolve property "{0}" on type "{1}".</target>
         <note>0 is a property name, 1 is a type name</note>
       </trans-unit>
       <trans-unit id="TypeResolution">
-        <source>Can't resolve "{0}".</source>
-        <target state="new">Can't resolve "{0}".</target>
+        <source>Cannot resolve type "{0}".</source>
+        <target state="new">Cannot resolve type "{0}".</target>
         <note>0 is a type name</note>
       </trans-unit>
     </body>

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Conversion" xml:space="preserve">
-    <value>Cannot convert "{0}" into "{1}".</value>
+    <value>Cannot convert value "{0}" to "{1}".</value>
     <comment>0 is a value, 1 is a type</comment>
   </data>
   <data name="MissingEventHandler" xml:space="preserve">
@@ -126,11 +126,11 @@
     <comment>0 is the handler name, 1 is the declaring type</comment>
   </data>
   <data name="PropertyResolution" xml:space="preserve">
-    <value>Can't resolve "{0}" on "{1}".</value>
+    <value>Cannot resolve property "{0}" on type "{1}".</value>
     <comment>0 is a property name, 1 is a type name</comment>
   </data>
   <data name="TypeResolution" xml:space="preserve">
-    <value>Can't resolve "{0}".</value>
+    <value>Cannot resolve type "{0}".</value>
     <comment>0 is a type name</comment>
   </data>
 </root>
