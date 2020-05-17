@@ -216,7 +216,7 @@ steps:
       platform: 'x86'
       solution: 'Xamarin.Forms.ControlGallery.WindowsUniversal/Xamarin.Forms.ControlGallery.WindowsUniversal.csproj'
       configuration: '$(BuildConfiguration)'
-      msbuildArgs: ' /bl:$(Build.ArtifactStagingDirectory)/appx-proj-$(BuildConfiguration).binlog /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackagesProj\$(BuildConfiguration)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      msbuildArgs: '/p:GenerateAppxPackageOnBuild=true /bl:$(Build.ArtifactStagingDirectory)/appx-proj-$(BuildConfiguration).binlog /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackagesProj\$(BuildConfiguration)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ${{ parameters.artifactsName }}'
