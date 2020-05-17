@@ -207,8 +207,16 @@ steps:
     inputs:
       platform: 'x86'
       solution: 'Xamarin.Forms.sln'
-      configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(build.artifactStagingDirectory)\AppxPackages\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      configuration: '$(BuildConfiguration)'
+      msbuildArgs: ' /bl:$(Build.ArtifactStagingDirectory)/appx-$(BuildConfiguration).binlog /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\$(BuildConfiguration)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+
+      
+  - task: VSBuild@1
+    inputs:
+      platform: 'x86'
+      solution: 'Xamarin.Forms.ControlGallery.WindowsUniversal/Xamarin.Forms.ControlGallery.WindowsUniversal.csproj'
+      configuration: '$(BuildConfiguration)'
+      msbuildArgs: ' /bl:$(Build.ArtifactStagingDirectory)/appx-proj-$(BuildConfiguration).binlog /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackagesProj\$(BuildConfiguration)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ${{ parameters.artifactsName }}'
