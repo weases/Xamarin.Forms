@@ -202,13 +202,13 @@ steps:
         **/*.binlog
 
       TargetFolder: ${{ parameters.artifactsTargetFolder }}
-
+      
   - task: VSBuild@1
     inputs:
       platform: 'x86'
       solution: 'Xamarin.Forms.sln'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(build.artifactsTargetFolder)\AppxPackages\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      msbuildArgs: '/p:AppxBundlePlatforms="x86|x64" /p:AppxPackageDir="$(build.artifactStagingDirectory)\AppxPackages\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ${{ parameters.artifactsName }}'
