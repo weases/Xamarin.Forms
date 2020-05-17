@@ -212,7 +212,6 @@ steps:
     inputs:
       testAssemblyVer2: |
         **/bin/$(BuildConfiguration)/Xamarin.Forms.Core.Windows.UITests.dll
-        **\bin\x86\$(BuildConfiguration)\Xamarin.Forms.ControlGallery.WindowsUniversal.build.appxrecipe
       searchFolder: ${{ parameters.nunitTestFolder }}
       codeCoverageEnabled: true
       testRunTitle: '$(BuildConfiguration)_UITests'
