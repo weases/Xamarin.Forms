@@ -85,6 +85,7 @@ namespace Xamarin.Forms.Platform.iOS
 
 				UpdateContent();
 				UpdateIsSwipeEnabled();
+				UpdateAutoClose();
 				UpdateSwipeTransitionMode();
 				SetBackgroundColor(Element.BackgroundColor);
 			}
@@ -152,6 +153,8 @@ namespace Xamarin.Forms.Platform.iOS
 				SetBackgroundColor(Element.BackgroundColor);
 			else if (e.PropertyName == VisualElement.IsEnabledProperty.PropertyName)
 				UpdateIsSwipeEnabled();
+			else if (e.PropertyName == SwipeView.AutoCloseProperty.PropertyName)
+				UpdateAutoClose();
 			else if (e.PropertyName == Specifics.SwipeTransitionModeProperty.PropertyName)
 				UpdateSwipeTransitionMode();
 		}
@@ -208,6 +211,8 @@ namespace Xamarin.Forms.Platform.iOS
 
 			if (disposing)
 			{
+				MessagingCenter.Unsubscribe<SwipeViewRenderer, SwipeView>(this, SwipeView.AutoCloseSwipeViewSignalName);
+
 				if (Element != null)
 				{
 					Element.OpenRequested -= OnOpenRequested;
@@ -394,6 +399,22 @@ namespace Xamarin.Forms.Platform.iOS
 		void UpdateIsSwipeEnabled()
 		{
 			_isSwipeEnabled = Element.IsEnabled;
+		}
+
+		void UpdateAutoClose()
+		{
+			bool autoClose = Element.AutoClose;
+
+			if (autoClose)
+			{
+				MessagingCenter.Subscribe<SwipeViewRenderer, SwipeView>(this, SwipeView.AutoCloseSwipeViewSignalName, (sender, args) =>
+				{
+					if (args != Element)
+						ResetSwipe();
+				});
+			}
+			else
+				MessagingCenter.Unsubscribe<SwipeViewRenderer, SwipeView>(this, SwipeView.AutoCloseSwipeViewSignalName);
 		}
 
 		bool HasSwipeItems()
@@ -1450,6 +1471,11 @@ namespace Xamarin.Forms.Platform.iOS
 		{
 			if (_swipeDirection == null || !ValidateSwipeDirection())
 				return;
+
+			var autoClose = Element.AutoClose;
+
+			if (autoClose)
+				MessagingCenter.Send(this, SwipeView.AutoCloseSwipeViewSignalName, Element);
 
 			var swipeStartedEventArgs = new SwipeStartedEventArgs(_swipeDirection.Value);
 			((ISwipeViewController)Element).SendSwipeStarted(swipeStartedEventArgs);
