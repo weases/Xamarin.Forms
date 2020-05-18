@@ -207,11 +207,11 @@ steps:
       msbuildArgs: '/bl:$(Build.ArtifactStagingDirectory)/appx-proj-$(BuildConfiguration).binlog /p:AppxBundlePlatforms="x86" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackagesProj\$(BuildConfiguration)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
 
 
-  - task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
-    displayName: 'Start - WinAppDriver'
-    inputs:
-      WADArguments: 127.0.0.1 4723/wd/hub
-      AgentResolution: 1080p
+  # - task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
+  #   displayName: 'Start - WinAppDriver'
+  #   inputs:
+  #     WADArguments: 127.0.0.1 4723/wd/hub
+  #     AgentResolution: 1080p
 
   - task: VSTest@2
     displayName: 'UI Tests'
@@ -225,10 +225,10 @@ steps:
       diagnosticsEnabled: true
 
   
-  - task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
-    displayName: 'Stop - WinAppDriver'
-    inputs:
-      OperationType: Stop
+  # - task: WinAppDriver.winappdriver-pipelines-task.winappdriver-pipelines-task.Windows Application Driver@0
+  #   displayName: 'Stop - WinAppDriver'
+  #   inputs:
+  #     OperationType: Stop
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ${{ parameters.artifactsName }}'
