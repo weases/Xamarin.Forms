@@ -228,6 +228,23 @@ Task("provision-monosdk")
             await Boots(monoSDK);
     });
 
+Task("provision-windowssdk")
+    .Description("Install Windows SDK")
+    .Does(() =>
+    {
+        if(IsRunningOnWindows())
+        {
+            string installerPath = $"{System.IO.Path.GetTempPath()}" + "WindowsSDK.exe";
+            DownloadFile("https://go.microsoft.com/fwlink/p/?linkid=2120843", installerPath);
+
+            var result = StartProcess(installerPath, new ProcessSettings {
+                Arguments = new ProcessArgumentBuilder()
+                    .Append(@"/features + /q")
+                }
+            );
+        }
+    });
+
 Task("provision-uitests-uwp")
     .Description("Installs and Starts WindowsApplicationDriver. Use WinAppDriverPath to specify WinAppDriver Location.")
     .Does(() =>
@@ -287,7 +304,8 @@ Task("provision")
     .IsDependentOn("provision-macsdk")
     .IsDependentOn("provision-iossdk")
     .IsDependentOn("provision-monosdk")
-    .IsDependentOn("provision-androidsdk");
+    .IsDependentOn("provision-androidsdk")
+    .IsDependentOn("provision-windowssdk");
 
 Task("NuGetPack")
     .Description("Build and Create Nugets")
