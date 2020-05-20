@@ -39,8 +39,8 @@ namespace Xamarin.Forms.Platform.iOS
 			ClearConstraints();
 			ConstrainedDimension = constant;
 		}
-
-		public override void ClearConstraints()
+		
+		protected void ClearConstraints()
 		{
 			ConstrainedSize = default;
 			ConstrainedDimension = default;

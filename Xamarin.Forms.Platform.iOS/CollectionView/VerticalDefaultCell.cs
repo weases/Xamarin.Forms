@@ -1,5 +1,6 @@
 ﻿using CoreGraphics;
 using Foundation;
+using UIKit;
 
 namespace Xamarin.Forms.Platform.iOS
 {
@@ -12,12 +13,8 @@ namespace Xamarin.Forms.Platform.iOS
 		public VerticalDefaultCell(CGRect frame) : base(frame)
 		{
 			Constraint = Label.WidthAnchor.ConstraintEqualTo(Frame.Width);
+			Constraint.Priority = (float)UILayoutPriority.DefaultHigh;
 			Constraint.Active = true;
-		}
-
-		public override void ClearConstraints()
-		{
-			Constraint.Constant = 0;
 		}
 
 		public override void ConstrainTo(CGSize constraint)

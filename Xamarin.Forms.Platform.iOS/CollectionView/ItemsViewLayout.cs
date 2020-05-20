@@ -14,6 +14,7 @@ namespace Xamarin.Forms.Platform.iOS
 		bool _adjustContentOffset;
 		CGSize _adjustmentSize0;
 		CGSize _adjustmentSize1;
+		CGSize _currentSize;
 
 		public ItemsUpdatingScrollMode ItemsUpdatingScrollMode { get; set; }
 
@@ -78,6 +79,27 @@ namespace Xamarin.Forms.Platform.iOS
 			{
 				UpdateItemSpacing();
 			}
+		}
+
+		internal virtual void UpdateConstraints(CGSize size)
+		{
+			if (size == _currentSize)
+			{
+				return;
+			}
+
+			_currentSize = size;
+
+			var newSize = new CGSize(Math.Floor(size.Width), Math.Floor(size.Height));
+			ConstrainTo(newSize);
+
+			UpdateCellConstraints();
+		}
+
+		internal void SetInitialConstraints(CGSize size) 
+		{
+			_currentSize = size;
+			ConstrainTo(size);
 		}
 
 		public abstract void ConstrainTo(CGSize size);
@@ -147,18 +169,6 @@ namespace Xamarin.Forms.Platform.iOS
 			}
 		}
 
-		public override bool ShouldInvalidateLayoutForBoundsChange(CGRect newBounds)
-		{
-			var shouldInvalidate = base.ShouldInvalidateLayoutForBoundsChange(newBounds);
-
-			if (shouldInvalidate)
-			{
-				UpdateConstraints(newBounds.Size);
-			}
-
-			return shouldInvalidate;
-		}
-
 		public override bool ShouldInvalidateLayout(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes)
 		{
 			if (ItemSizingStrategy == ItemSizingStrategy.MeasureAllItems)
@@ -200,7 +210,19 @@ namespace Xamarin.Forms.Platform.iOS
 			// If GetPrototype() _can_ return a cell, this estimate will be updated once that cell is measured
 			EstimatedItemSize = new CGSize(1, 1);
 
-			if (!(GetPrototype() is ItemsViewCell prototype))
+			ItemsViewCell prototype = null;
+
+			if (CollectionView.VisibleCells.Length > 0)
+			{
+				prototype = CollectionView.VisibleCells[0] as ItemsViewCell;
+			}
+
+			if (prototype == null)
+			{
+				prototype = GetPrototype() as ItemsViewCell;
+			}
+
+			if (prototype == null)
 			{
 				return;
 			}
@@ -224,25 +246,20 @@ namespace Xamarin.Forms.Platform.iOS
 			}
 		}
 
-		bool ConstraintsMatchScrollDirection(CGSize size)
-		{
-			if (ScrollDirection == UICollectionViewScrollDirection.Vertical)
-			{
-				return ConstrainedDimension == size.Width;
-			}
-
-			return ConstrainedDimension == size.Height;
-		}
-
 		void Initialize(UICollectionViewScrollDirection scrollDirection)
 		{
 			ScrollDirection = scrollDirection;
 		}
 
-		internal void UpdateCellConstraints()
+		protected void UpdateCellConstraints()
 		{
-			var cells = CollectionView.VisibleCells;
+			PrepareCellsForLayout(CollectionView.VisibleCells);
+			PrepareCellsForLayout(CollectionView.GetVisibleSupplementaryViews(UICollectionElementKindSectionKey.Header));
+			PrepareCellsForLayout(CollectionView.GetVisibleSupplementaryViews(UICollectionElementKindSectionKey.Footer));
+		}
 
+		void PrepareCellsForLayout(UICollectionReusableView[] cells) 
+		{
 			for (int n = 0; n < cells.Length; n++)
 			{
 				if (cells[n] is ItemsViewCell constrainedCell)
@@ -250,17 +267,6 @@ namespace Xamarin.Forms.Platform.iOS
 					PrepareCellForLayout(constrainedCell);
 				}
 			}
-		}
-
-		void UpdateConstraints(CGSize size)
-		{
-			if (ConstraintsMatchScrollDirection(size))
-			{
-				return;
-			}
-
-			ConstrainTo(size);
-			UpdateCellConstraints();
 		}
 
 		public override CGPoint TargetContentOffset(CGPoint proposedContentOffset, CGPoint scrollingVelocity)
@@ -372,43 +378,31 @@ namespace Xamarin.Forms.Platform.iOS
 
 		public override UICollectionViewLayoutInvalidationContext GetInvalidationContext(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes)
 		{
-			if (Forms.IsiOS11OrNewer)
+			if (preferredAttributes.RepresentedElementKind != UICollectionElementKindSectionKey.Header
+				&& preferredAttributes.RepresentedElementKind != UICollectionElementKindSectionKey.Footer)
 			{
 				return base.GetInvalidationContext(preferredAttributes, originalAttributes);
 			}
-
+			
+			// Ensure that if this invalidation was triggered by header/footer changes, the header/footer are being invalidated
+			
+			UICollectionViewFlowLayoutInvalidationContext invalidationContext = new UICollectionViewFlowLayoutInvalidationContext();
 			var indexPath = preferredAttributes.IndexPath;
 
-			try
+			if (preferredAttributes.RepresentedElementKind == UICollectionElementKindSectionKey.Header)
 			{
-				UICollectionViewLayoutInvalidationContext invalidationContext =
-					base.GetInvalidationContext(preferredAttributes, originalAttributes);
-
-				// Ensure that if this invalidation was triggered by header/footer changes, the header/footer
-				// are being invalidated
-				if (preferredAttributes.RepresentedElementKind == UICollectionElementKindSectionKey.Header)
-				{
-					invalidationContext.InvalidateSupplementaryElements(UICollectionElementKindSectionKey.Header,
-						new[] { indexPath });
-				}
-				else if (preferredAttributes.RepresentedElementKind == UICollectionElementKindSectionKey.Footer)
-				{
-					invalidationContext.InvalidateSupplementaryElements(UICollectionElementKindSectionKey.Footer,
-						new[] { indexPath });
-				}
-
-				return invalidationContext;
+				invalidationContext.InvalidateSupplementaryElements(UICollectionElementKindSectionKey.Header, new[] { indexPath });
 			}
-			catch (MonoTouchException)
+			else if (preferredAttributes.RepresentedElementKind == UICollectionElementKindSectionKey.Footer)
 			{
-				// This happens on iOS 10 if we have any empty groups in our ItemsSource. Catching here and 
-				// returning a UICollectionViewFlowLayoutInvalidationContext means that the application does not
-				// crash, though any group headers/footers will initially draw in the wrong location. It's possible to 
-				// work around this problem by forcing a full layout update after the headers/footers have been 
-				// drawn in the wrong places
+				invalidationContext.InvalidateSupplementaryElements(UICollectionElementKindSectionKey.Footer, new[] { indexPath });
 			}
 
-			return new UICollectionViewFlowLayoutInvalidationContext();
+			return invalidationContext;
+
+			// On iOS 10 though any group headers/footers will initially draw in the wrong location. It's possible to 
+			// work around this problem by forcing a full layout update after the headers/footers have been 
+			// drawn in the wrong places
 		}
 
 		public override UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView(NSString kind, NSIndexPath indexPath)
@@ -561,6 +555,22 @@ namespace Xamarin.Forms.Platform.iOS
 					return;
 				}
 			}
+		}
+
+		public override bool ShouldInvalidateLayoutForBoundsChange(CGRect newBounds)
+		{
+			if (newBounds.Size == _currentSize)
+			{
+				return base.ShouldInvalidateLayoutForBoundsChange(newBounds);
+			}
+
+			return true;
+		}
+
+		public override void InvalidateLayout()
+		{
+			UpdateConstraints(CollectionView.Frame.Size);
+			base.InvalidateLayout();
 		}
 	}
 }

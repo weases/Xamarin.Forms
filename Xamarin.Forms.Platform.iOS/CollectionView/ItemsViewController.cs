@@ -142,14 +142,14 @@ namespace Xamarin.Forms.Platform.iOS
 		public override void ViewWillLayoutSubviews()
 		{
 			base.ViewWillLayoutSubviews();
-			
+
 			// We can't set this constraint up on ViewDidLoad, because Forms does other stuff that resizes the view
 			// and we end up with massive layout errors. And View[Will/Did]Appear do not fire for this controller
 			// reliably. So until one of those options is cleared up, we set this flag so that the initial constraints
 			// are set up the first time this method is called.
 			if (!_initialConstraintsSet)
 			{
-				ItemsViewLayout.ConstrainTo(CollectionView.Bounds.Size);
+				ItemsViewLayout.SetInitialConstraints(CollectionView.Bounds.Size);
 				UpdateEmptyView();
 				_initialConstraintsSet = true;
 			}
@@ -202,7 +202,7 @@ namespace Xamarin.Forms.Platform.iOS
 
 			ItemsViewLayout.PrepareCellForLayout(cell);
 		}
-
+		
 		public virtual NSIndexPath GetIndexForItem(object item)
 		{
 			return ItemsSource.GetIndexForItem(item);
@@ -388,5 +388,6 @@ namespace Xamarin.Forms.Platform.iOS
 				_emptyViewDisplayed = false;
 			}
 		}
+		
 	}
 }
