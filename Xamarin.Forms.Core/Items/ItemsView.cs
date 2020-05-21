@@ -95,9 +95,8 @@ namespace Xamarin.Forms
 				return;
 			}
 
+			OnChildAdded(element);
 			_logicalChildren.Add(element);
-
-			element.Parent = this;
 		}
 
 		public void RemoveLogicalChild(Element element)
@@ -107,7 +106,7 @@ namespace Xamarin.Forms
 				return;
 			}
 
-			element.Parent = null;
+			OnChildRemoved(element);
 			_logicalChildren.Remove(element);
 		}
 
