@@ -212,7 +212,7 @@ namespace Xamarin.Forms.Platform.iOS
 
 			ItemsViewCell prototype = null;
 
-			if (CollectionView.VisibleCells.Length > 0)
+			if (CollectionView?.VisibleCells.Length > 0)
 			{
 				prototype = CollectionView.VisibleCells[0] as ItemsViewCell;
 			}
