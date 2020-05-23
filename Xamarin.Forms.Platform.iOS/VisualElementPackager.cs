@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UIKit;
 using Xamarin.Forms.Internals;
 
 #if __MOBILE__
